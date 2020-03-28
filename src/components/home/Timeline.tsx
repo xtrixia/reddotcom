@@ -30,7 +30,7 @@ function Timeline({ history }: TimelineProps) {
     const currentThread = database.read('/posts/');
 
     currentThread.on('value', (data: any) => {
-      const getData = data.val();
+      const getData = data.val() || {};
 
       if (Object.keys(getData).length > 0) {
         const getDataKeys = Object.keys(data.val()).map((key: string) => {
@@ -64,7 +64,7 @@ function Timeline({ history }: TimelineProps) {
         Beranda
       </Button>
 
-      {threads.length > 0 &&
+      {threads.length > 0 ? (
         threads.map((data: any, index: number) => (
           <Card
             key={index}
@@ -81,7 +81,12 @@ function Timeline({ history }: TimelineProps) {
               </p>
             </CardContent>
           </Card>
-        ))}
+        ))
+      ) : (
+        <p>
+          Tidak ada <i>thread</i> saat ini
+        </p>
+      )}
     </React.Fragment>
   );
 }
