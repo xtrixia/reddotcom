@@ -9,7 +9,7 @@ import { Grid, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AddCircleOutline, ExitToApp, Person } from '@material-ui/icons';
 
-import AddThread from './Add';
+import AddThread from './thread/Add';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -56,10 +56,9 @@ type HomeProps = {
   children: React.ReactChildren;
 } & RouteComponentProps;
 
-function Home({ children, match, history }: HomeProps) {
+function Home({ children, history }: HomeProps) {
   const classes = useStyles();
 
-  console.log(match);
   const [toggleAdd, setToggleAdd] = useState<boolean>(false);
 
   return (

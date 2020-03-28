@@ -10,6 +10,7 @@ import Footer from './components';
 import Login from './components/login';
 import Register from './components/register';
 import Profile from './components/profile';
+import Thread from './components/home/thread/Detail';
 import Timeline from './components/home/Timeline';
 
 class Router extends React.Component {
@@ -25,6 +26,7 @@ class Router extends React.Component {
                 </Route> */}
               <Route exact path='/profile' component={Profile} />
               <Route exact path='/profile/:id' component={Profile} />
+              <Route exact path='/thread/:id' component={Thread} />
             </Home>
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />

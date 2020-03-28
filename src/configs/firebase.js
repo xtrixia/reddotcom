@@ -17,3 +17,20 @@ const config = {
 
 // Initialize firebase
 firebase.initializeApp(config);
+
+export const database = {
+  // CREATE
+  create: (ref, variables, callback) =>
+    firebase
+      .database()
+      .ref(ref)
+      .set(variables, callback),
+  // READ
+  read: ref => firebase.database().ref(ref),
+  // DELETE
+  delete: ref =>
+    firebase
+      .database()
+      .ref(ref)
+      .remove()
+};

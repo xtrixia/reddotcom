@@ -12,7 +12,7 @@ type LoungeProps = {
 
 function Lounge({ children }: LoungeProps) {
   return (
-    <Grid container spacing={4} xs={12}>
+    <Grid container spacing={4}>
       <Grid item xs={12}>
         {children}
       </Grid>

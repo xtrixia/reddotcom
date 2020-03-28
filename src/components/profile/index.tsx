@@ -3,10 +3,14 @@
  * @summary Handle user profile
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import { database } from '../../configs/firebase';
+
+import { ProfileType } from './types';
 
 const useStyles = makeStyles(() => ({
   fonts: {
@@ -24,17 +28,34 @@ type ProfileProps = {} & RouteComponentProps<RouteParams>;
 
 function Profile({ history, match }: ProfileProps) {
   const classes = useStyles();
-console.log(match)
-  if (match.params.id) {
-    // TO DO: get data from db by selected accountId
-  }
 
-  // TO DO: get data from db by current accountId
-  const userProfile = {
-    name: 'Annisa Feryannie',
-    username: 'pew',
-    email: 'aferyannie@gmail.com'
+  // TO DO: ambil from login
+  const accountId = 'acc-v8rjrmsu2vck8bu1xe5';
+
+  const INITIAL_PROFILE: ProfileType = {
+    email: '',
+    username: ''
   };
+
+  const [profile, setProfile] = useState<ProfileType>(INITIAL_PROFILE);
+
+  const getProfileById = async () => {
+    const getProfile = await database
+      .read(`/accounts/${accountId}`)
+      .once('value');
+    const detailProfile = getProfile.val();
+
+    setProfile({
+      name: detailProfile?.name || '',
+      email: detailProfile?.email,
+      username: detailProfile?.username,
+      password: detailProfile?.password || ''
+    });
+  };
+
+  useEffect(() => {
+    getProfileById();
+  }, []);
 
   return (
     <React.Fragment>
@@ -46,10 +67,10 @@ console.log(match)
         Beranda
       </Button>
 
-      <h3>@{userProfile.username}</h3>
+      <h3>@{profile.username}</h3>
 
-      <p className={classes.fonts}>{userProfile.name}</p>
-      <p className={classes.fonts}>{userProfile.email}</p>
+      <p className={classes.fonts}>{profile.name}</p>
+      <p className={classes.fonts}>{profile.email}</p>
     </React.Fragment>
   );
 }

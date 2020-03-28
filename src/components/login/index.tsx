@@ -3,7 +3,7 @@
  * @summary Handle login process
  */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -24,7 +24,7 @@ function Login() {
   const classes = useStyles();
 
   const handleSubmit = () => {
-    alert('Berhasil masuk!');
+    alert('Berhasil masuk');
   };
 
   return (
