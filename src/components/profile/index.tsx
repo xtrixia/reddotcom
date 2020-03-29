@@ -3,12 +3,14 @@
  * @summary Handle user profile
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { database } from '../../configs/firebase';
+import { AuthContext } from '../../context';
+import Home from '../home';
 
 import { ProfileType } from './types';
 
@@ -26,11 +28,10 @@ interface RouteParams {
 
 type ProfileProps = {} & RouteComponentProps<RouteParams>;
 
-function Profile({ history, match }: ProfileProps) {
+function Profile({ history }: ProfileProps) {
   const classes = useStyles();
 
-  // TO DO: ambil from login
-  const accountId = 'acc-v8rjrmsu2vck8bu1xe5';
+  const currentUser = useContext(AuthContext);
 
   const INITIAL_PROFILE: ProfileType = {
     email: '',
@@ -41,37 +42,37 @@ function Profile({ history, match }: ProfileProps) {
 
   const getProfileById = async () => {
     const getProfile = await database
-      .read(`/accounts/${accountId}`)
+      .read(`/accounts/${currentUser?.uid}`)
       .once('value');
     const detailProfile = getProfile.val();
 
     setProfile({
-      name: detailProfile?.name || '',
       email: detailProfile?.email,
-      username: detailProfile?.username,
-      password: detailProfile?.password || ''
+      username: detailProfile?.username
     });
   };
 
   useEffect(() => {
     getProfileById();
+    // eslint-disable-next-line
   }, []);
 
   return (
-    <React.Fragment>
-      <Button
-        size='small'
-        style={{ marginTop: '2rem', marginBottom: '0.15rem' }}
-        onClick={() => history.push('/')}
-      >
-        Beranda
-      </Button>
+    <Home>
+      <React.Fragment>
+        <Button
+          size='small'
+          style={{ marginTop: '2rem', marginBottom: '2rem' }}
+          onClick={() => history.push('/')}
+        >
+          Beranda
+        </Button>
 
-      <h3>@{profile.username}</h3>
+        <h3>{profile.username}</h3>
 
-      <p className={classes.fonts}>{profile.name}</p>
-      <p className={classes.fonts}>{profile.email}</p>
-    </React.Fragment>
+        <p className={classes.fonts}>{profile.email}</p>
+      </React.Fragment>
+    </Home>
   );
 }
 

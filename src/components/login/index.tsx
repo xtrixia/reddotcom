@@ -3,57 +3,129 @@
  * @summary Handle login process
  */
 
-import React from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import React, { useContext } from 'react';
+import { Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
+
+import {
+  database,
+  authentication,
+  googleProvider,
+  twitterProvider,
+  AuthProviderType
+} from '../../configs/firebase';
+import { AuthContext } from '../../context';
 
 const useStyles = makeStyles(() => ({
   container: {
     display: 'grid',
     justifyItems: 'center',
     gridGap: '1rem',
-    padding: '5rem 5rem 0'
+    padding: '5rem 4rem 0'
   },
-  divider: {
+  wrapper: {
+    borderRadius: '15px',
     border: 'solid 1px #b5b5b5',
-    width: '5rem'
+    padding: '2rem',
+    textAlign: 'center'
+  },
+  buttonGoogle: {
+    margin: '0.5rem',
+    '&:hover': {
+      background: '#E94235'
+    }
+  },
+  buttonTwitter: {
+    margin: '0.5rem',
+    '&:hover': {
+      background: '#1B91DA'
+    }
   }
 }));
+type LoginProps = {} & RouteComponentProps;
 
-function Login() {
+function Login({ history }: LoginProps) {
   const classes = useStyles();
 
-  const handleSubmit = () => {
-    alert('Berhasil masuk');
+  const currentUser = useContext(AuthContext);
+
+  const handleLogin = (provider: AuthProviderType) => {
+    authentication
+      .signInWithPopup(provider)
+      .then(async data => {
+        // check accounts in database
+        let accounts = await database.read(`/accounts/`).once('value');
+        accounts = accounts.val();
+
+        // generate custom uid if `data.user.uid` is null
+        const uid: string =
+          data.user?.uid ||
+          `acc-${Math.random()
+            .toString(36)
+            .substring(2) + Date.now().toString(36)}`;
+
+        // create new session
+        await database.create(
+          `/sessions/${data.user?.uid}`,
+          {
+            username: data.user?.displayName
+          },
+          (error: any) => {
+            if (error) {
+              alert(error.message);
+            }
+          }
+        );
+
+        // add current user if not in database yet
+        if (accounts === null || Object.keys(accounts).indexOf(uid) === -1) {
+          await database.create(
+            `/accounts/${uid}`,
+            {
+              username: data.user?.displayName,
+              email: data.user?.email,
+              verified: data.user?.emailVerified,
+              photoURL: data.user?.photoURL
+            },
+            (error: any) => {
+              if (error) {
+                alert(error.message);
+              }
+            }
+          );
+        }
+
+        history.push('/');
+      })
+      .catch(error => {
+        alert(error.message);
+      });
   };
 
-  return (
-    <form onSubmit={handleSubmit} noValidate autoComplete='off'>
-      <Grid item className={classes.container}>
-        <TextField
-          id='outlined-basic'
-          label='Email'
-          variant='outlined'
-          type='email'
-        />
-        <TextField
-          id='outlined-basic'
-          label='Password'
-          variant='outlined'
-          type='password'
-        />
+  return !currentUser ? (
+    <Grid item xs={12} className={classes.container}>
+      <h3>Reddot[com]</h3>
 
-        <button type='submit'>Masuk</button>
+      <div className={classes.wrapper}>
+        <p>Masuk menggunakan sosial media</p>
 
-        <p>
-          Belum memiliki akun? Klik{' '}
-          <a href='/register' target='_self'>
-            disini
-          </a>{' '}
-          untuk daftar akun
-        </p>
-      </Grid>
-    </form>
+        <Button
+          className={classes.buttonGoogle}
+          onClick={() => handleLogin(googleProvider)}
+        >
+          Google
+        </Button>
+        <Button
+          className={classes.buttonTwitter}
+          onClick={() => handleLogin(twitterProvider)}
+        >
+          Twitter
+        </Button>
+      </div>
+    </Grid>
+  ) : (
+    <Redirect to='/' />
   );
 }
 

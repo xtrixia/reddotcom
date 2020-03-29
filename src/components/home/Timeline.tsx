@@ -6,14 +6,20 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button, Card, CardContent } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 
+import Home from '.';
 import { database } from '../../configs/firebase';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     margin: '1.5rem',
     cursor: 'pointer'
+  },
+  content: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '10px'
+    }
   }
 }));
 
@@ -30,13 +36,13 @@ function Timeline({ history }: TimelineProps) {
     const currentThread = database.read('/posts/');
 
     currentThread.on('value', (data: any) => {
-      const getData = data.val() || {};
+      const list = data.val() || {};
 
-      if (Object.keys(getData).length > 0) {
+      if (Object.keys(list).length > 0) {
         const getDataKeys = Object.keys(data.val()).map((key: string) => {
           return {
             id: key,
-            ...getData[key]
+            ...list[key]
           };
         });
         setThreads(getDataKeys);
@@ -59,35 +65,37 @@ function Timeline({ history }: TimelineProps) {
   }, []);
 
   return (
-    <React.Fragment>
-      <Button size='small' style={{ marginTop: '2rem' }} disabled>
-        Beranda
-      </Button>
+    <Home>
+      <React.Fragment>
+        <Button size='small' style={{ marginTop: '2rem' }} disabled>
+          Beranda
+        </Button>
 
-      {threads.length > 0 ? (
-        threads.map((data: any, index: number) => (
-          <Card
-            key={index}
-            raised
-            className={classes.container}
-            onClick={() => history.push(`/thread/${data.id}`)}
-          >
-            <CardContent>
-              <p>
-                {data.content}
-                <br />
-                <br />
-                Klik untuk melihat <i>thread</i>
-              </p>
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <p>
-          Tidak ada <i>thread</i> saat ini
-        </p>
-      )}
-    </React.Fragment>
+        {threads.length > 0 ? (
+          threads.map((data: any, index: number) => (
+            <Card
+              key={index}
+              raised
+              className={classes.container}
+              onClick={() => history.push(`/thread/${data.id}`)}
+            >
+              <CardContent className={classes.content}>
+                <p>
+                  {data.content}
+                  <br />
+                  <br />
+                  Klik untuk melihat <i>thread</i>
+                </p>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <p>
+            Tidak ada <i>thread</i> saat ini
+          </p>
+        )}
+      </React.Fragment>
+    </Home>
   );
 }
 export default withRouter(Timeline);

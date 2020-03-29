@@ -1,20 +1,16 @@
 /**
  * @file Add
- * @summary Handle add new Add
+ * @summary Handle add new thread
  */
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import {
-  Grid,
-  Button,
-  IconButton,
-  TextField
-} from '@material-ui/core';
+import { Grid, Button, IconButton, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Send } from '@material-ui/icons';
 
 import { database } from '../../../configs/firebase';
+import { AuthContext } from '../../../context';
 
 const useStyles = makeStyles(() => ({
   actions: {
@@ -31,6 +27,8 @@ type AddProps = {
 function Add({ onCancel }: AddProps) {
   const classes = useStyles();
 
+  const currentUser = useContext(AuthContext);
+
   const [content, setContent] = useState<string>('');
 
   const createNewThread = async () => {
@@ -42,15 +40,14 @@ function Add({ onCancel }: AddProps) {
       `/posts/${uid}`,
       {
         content: content,
-        // TO DO: ambil from login
-        accountId: 'acc-v8rjrmsu2vck8bu1xe5'
+        accountId: currentUser?.uid
       },
       (error: any) => {
         if (error) {
           alert(error.message);
         } else {
           setContent('');
-          onCancel()
+          onCancel();
         }
       }
     );
@@ -61,7 +58,7 @@ function Add({ onCancel }: AddProps) {
   };
 
   return (
-    <React.Fragment>
+    <Grid>
       <h3>
         <i>New Thread</i>
       </h3>
@@ -92,7 +89,7 @@ function Add({ onCancel }: AddProps) {
           <Send />
         </IconButton>
       </Grid>
-    </React.Fragment>
+    </Grid>
   );
 }
 

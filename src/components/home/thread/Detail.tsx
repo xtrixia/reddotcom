@@ -1,6 +1,6 @@
 /**
- * @file Thread
- * @summary Handle actions per thread
+ * @file Detail
+ * @summary Handle detail per thread
  */
 
 import React, { useEffect, useState } from 'react';
@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
 
+import Home from '../index';
 import { database } from '../../../configs/firebase';
 
 import { ThreadType } from './types';
@@ -42,17 +43,19 @@ function Thread({ match, history }: ThreadProps) {
     const author = await getAuthorById();
 
     selectedThread.on('value', data => {
-      const getData = data.val();
+      const selectedThread = data.val();
 
-      if (Object.keys(getData).length > 0) {
-        const getComments = getData.comments
-          ? Object.values(getData.comments).map((comment: any) => comment.value)
+      if (Object.keys(selectedThread).length > 0) {
+        const getComments = selectedThread.comments
+          ? Object.values(selectedThread.comments).map(
+              (comment: any) => comment.value
+            )
           : [];
 
         setDetail({
           author: author.length === 0 ? 'anonymous' : author,
           comments: getComments,
-          content: getData?.content
+          content: selectedThread?.content
         });
       }
     });
@@ -60,15 +63,12 @@ function Thread({ match, history }: ThreadProps) {
 
   /** Get username by accountId from database */
   const getAuthorById = async () => {
-    const getDetail = await database
-      .read(`/posts/${match.params.id}`)
+    const post = await database.read(`/posts/${match.params.id}`).once('value');
+    const author = await database
+      .read(`/accounts/${post.val().accountId}`)
       .once('value');
 
-    const getAuthor = await database
-      .read(`/accounts/${getDetail.val().accountId}`)
-      .once('value');
-
-    return getAuthor.val()?.username || '';
+    return author.val()?.username || '';
   };
 
   /* Unsubscribe database */
@@ -108,49 +108,51 @@ function Thread({ match, history }: ThreadProps) {
   };
 
   return (
-    <React.Fragment>
-      <Button
-        size='small'
-        style={{ marginTop: '2rem' }}
-        onClick={() => history.push('/')}
-      >
-        Beranda
-      </Button>
+    <Home>
+      <React.Fragment>
+        <Button
+          size='small'
+          style={{ marginTop: '2rem' }}
+          onClick={() => history.push('/')}
+        >
+          Beranda
+        </Button>
 
-      <p>@{detail.author}</p>
+        <p>@{detail.author}</p>
 
-      <p style={{ padding: '0  1rem 1rem' }}>{detail.content}</p>
+        <p style={{ padding: '0  1rem 1rem' }}>{detail.content}</p>
 
-      <hr style={{ margin: '0 2rem' }} />
-      <h5>Komentar</h5>
+        <hr style={{ margin: '0 2rem' }} />
+        <h5>Komentar</h5>
 
-      <TextField
-        fullWidth
-        multiline
-        type='text'
-        variant='outlined'
-        autoComplete='off'
-        aria-label='add new comment'
-        style={{ padding: '1rem 2rem', maxWidth: 'calc(100% - 70px)' }}
-        value={comment}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          setComment(event.target.value)
-        }
-      />
+        <TextField
+          fullWidth
+          multiline
+          type='text'
+          variant='outlined'
+          autoComplete='off'
+          aria-label='add new comment'
+          style={{ padding: '1rem 2rem', maxWidth: 'calc(100% - 70px)' }}
+          value={comment}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setComment(event.target.value)
+          }
+        />
 
-      <IconButton aria-label='add' size='small' onClick={handleSubmit}>
-        <Send />
-      </IconButton>
+        <IconButton aria-label='add' size='small' onClick={handleSubmit}>
+          <Send />
+        </IconButton>
 
-      {detail?.comments &&
-        detail.comments.map((comment: string, index: number) => (
-          <Card key={index} style={{ margin: '1rem' }}>
-            <CardContent>
-              <p>{comment}</p>
-            </CardContent>
-          </Card>
-        ))}
-    </React.Fragment>
+        {detail?.comments &&
+          detail.comments.map((comment: string, index: number) => (
+            <Card key={index} style={{ margin: '1rem' }}>
+              <CardContent>
+                <p>{comment}</p>
+              </CardContent>
+            </Card>
+          ))}
+      </React.Fragment>
+    </Home>
   );
 }
 

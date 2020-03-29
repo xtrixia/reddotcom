@@ -17,18 +17,31 @@ const config = {
 
 // Initialize firebase
 firebase.initializeApp(config);
+// Initialize authentication
+export const authentication = firebase.auth();
+/* List: firebase auth provider */
+export const googleProvider: firebase.auth.GoogleAuthProvider_Instance = new firebase.auth.GoogleAuthProvider();
+export const twitterProvider: firebase.auth.TwitterAuthProvider_Instance = new firebase.auth.TwitterAuthProvider();
+
+export type AuthProviderType =
+  | firebase.auth.GoogleAuthProvider_Instance
+  | firebase.auth.TwitterAuthProvider_Instance;
 
 export const database = {
   // CREATE
-  create: (ref, variables, callback) =>
+  create: (
+    ref: string,
+    variables: { [key: string]: any },
+    callback: (error: Error | null) => void | undefined
+  ) =>
     firebase
       .database()
       .ref(ref)
       .set(variables, callback),
   // READ
-  read: ref => firebase.database().ref(ref),
+  read: (ref: string) => firebase.database().ref(ref),
   // DELETE
-  delete: ref =>
+  delete: (ref: string) =>
     firebase
       .database()
       .ref(ref)
