@@ -9,8 +9,8 @@ describe('Profile Testing', () => {
     jest.mock('firebase/app', () => ({
       initializeApp: jest.fn(),
       database: jest.fn(() => ({
-        ref: jest.fn()
-      }))
+        ref: jest.fn(),
+      })),
     }));
   });
 
@@ -18,7 +18,7 @@ describe('Profile Testing', () => {
     const wrapper = mount(
       <MemoryRouter>
         <Profile />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const buttonHome = wrapper.find('button').at(3);

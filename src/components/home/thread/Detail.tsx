@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+// This is intentional because have no alternative way to throw error for now
+
 /**
  * @file Detail
  * @summary Handle detail per thread
@@ -10,7 +13,7 @@ import {
   Card,
   CardContent,
   IconButton,
-  TextField
+  TextField,
 } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
 
@@ -28,7 +31,7 @@ type ThreadProps = {} & RouteComponentProps<RouteParams>;
 function Thread({ match, history }: ThreadProps) {
   const INITIAL_DETAIL: ThreadType = {
     author: '',
-    content: ''
+    content: '',
   };
 
   /** State: current detail thread */
@@ -36,30 +39,6 @@ function Thread({ match, history }: ThreadProps) {
 
   /** State: input comment value */
   const [comment, setComment] = useState<string>('');
-
-  /* Get detail thread by ID from database */
-  const getThreadById = async () => {
-    const selectedThread = database.read(`/posts/${match.params.id}`);
-    const author = await getAuthorById();
-
-    selectedThread.on('value', data => {
-      const selectedThread = data.val();
-
-      if (Object.keys(selectedThread).length > 0) {
-        const getComments = selectedThread.comments
-          ? Object.values(selectedThread.comments).map(
-              (comment: any) => comment.value
-            )
-          : [];
-
-        setDetail({
-          author: author.length === 0 ? 'anonymous' : author,
-          comments: getComments,
-          content: selectedThread?.content
-        });
-      }
-    });
-  };
 
   /** Get username by accountId from database */
   const getAuthorById = async () => {
@@ -70,6 +49,31 @@ function Thread({ match, history }: ThreadProps) {
 
     return author.val()?.username || '';
   };
+
+  /* Get detail thread by ID from database */
+  const getThreadById = async () => {
+    const selectedThread = database.read(`/posts/${match.params.id}`);
+    const author = await getAuthorById();
+
+    selectedThread.on('value', (data) => {
+      const currentThread = data.val();
+
+      if (Object.keys(currentThread).length > 0) {
+        const getComments = currentThread.comments
+          ? Object.values(currentThread.comments).map(
+            (threadComment: any) => threadComment.value,
+          )
+          : [];
+
+        setDetail({
+          author: author.length === 0 ? 'anonymous' : author,
+          comments: getComments,
+          content: currentThread?.content,
+        });
+      }
+    });
+  };
+
 
   /* Unsubscribe database */
   const unsubscribeDatabase = () => {
@@ -95,7 +99,7 @@ function Thread({ match, history }: ThreadProps) {
     database.create(
       `/posts/${match.params.id}/comments/${uid}`,
       {
-        value: comment
+        value: comment,
       },
       (error: any) => {
         if (error) {
@@ -103,22 +107,25 @@ function Thread({ match, history }: ThreadProps) {
         } else {
           setComment('');
         }
-      }
+      },
     );
   };
 
   return (
     <Home>
-      <React.Fragment>
+      <>
         <Button
-          size='small'
+          size="small"
           style={{ marginTop: '2rem' }}
           onClick={() => history.push('/')}
         >
           Beranda
         </Button>
 
-        <p>@{detail.author}</p>
+        <p>
+          @
+          {detail.author}
+        </p>
 
         <p style={{ padding: '0  1rem 1rem' }}>{detail.content}</p>
 
@@ -128,34 +135,32 @@ function Thread({ match, history }: ThreadProps) {
         <TextField
           fullWidth
           multiline
-          type='text'
-          variant='outlined'
-          autoComplete='off'
-          aria-label='add new comment'
+          type="text"
+          variant="outlined"
+          autoComplete="off"
+          aria-label="add new comment"
           style={{ padding: '1rem 2rem', maxWidth: 'calc(100% - 70px)' }}
           value={comment}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setComment(event.target.value)
-          }
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => setComment(event.target.value)}
         />
 
         <IconButton
-          aria-label='add-comment'
-          size='small'
+          aria-label="add-comment"
+          size="small"
           onClick={handleSubmit}
         >
           <Send />
         </IconButton>
 
-        {detail?.comments &&
-          detail.comments.map((comment: string, index: number) => (
-            <Card key={index} style={{ margin: '1rem' }}>
+        {detail?.comments
+          && detail.comments.map((threadComment: string) => (
+            <Card key={threadComment} style={{ margin: '1rem' }}>
               <CardContent>
-                <p>{comment}</p>
+                <p>{threadComment}</p>
               </CardContent>
             </Card>
           ))}
-      </React.Fragment>
+      </>
     </Home>
   );
 }

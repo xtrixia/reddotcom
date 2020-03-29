@@ -1,10 +1,15 @@
+/* eslint-disable no-alert */
+// This is intentional because have no alternative way to throw error for now
+
 /**
  * @file Add
  * @summary Handle add new thread
  */
 
 import React, { useState, useContext } from 'react';
-import { Grid, Button, IconButton, TextField } from '@material-ui/core';
+import {
+  Grid, Button, IconButton, TextField,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Send } from '@material-ui/icons';
 
@@ -15,8 +20,8 @@ const useStyles = makeStyles(() => ({
   actions: {
     padding: '0 2rem',
     display: 'flex',
-    justifyContent: 'space-between'
-  }
+    justifyContent: 'space-between',
+  },
 }));
 
 type AddProps = {
@@ -38,8 +43,8 @@ function Add({ onCancel }: AddProps) {
     database.create(
       `/posts/${uid}`,
       {
-        content: content,
-        accountId: currentUser?.uid
+        content,
+        accountId: currentUser?.uid,
       },
       (error: any) => {
         if (error) {
@@ -48,7 +53,7 @@ function Add({ onCancel }: AddProps) {
           setContent('');
           onCancel();
         }
-      }
+      },
     );
   };
 
@@ -64,25 +69,23 @@ function Add({ onCancel }: AddProps) {
       <TextField
         fullWidth
         multiline
-        type='text'
-        variant='outlined'
-        autoComplete='off'
-        aria-label='add new thread'
+        type="text"
+        variant="outlined"
+        autoComplete="off"
+        aria-label="add new thread"
         style={{ padding: '1rem 2rem', maxWidth: 'calc(100% - 70px)' }}
         value={content}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-          setContent(event.target.value)
-        }
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setContent(event.target.value)}
       />
 
       <Grid className={classes.actions}>
-        <Button aria-label='add' size='small' onClick={onCancel}>
+        <Button aria-label="add" size="small" onClick={onCancel}>
           Batal
         </Button>
         <IconButton
-          aria-label='add-thread'
-          size='small'
-          type='submit'
+          aria-label="add-thread"
+          size="small"
+          type="submit"
           onClick={handleSubmit}
         >
           <Send />

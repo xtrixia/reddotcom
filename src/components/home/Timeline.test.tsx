@@ -11,7 +11,7 @@ describe('Timeline Testing', () => {
     const wrapper = mount(
       <MemoryRouter>
         <Timeline />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
@@ -20,7 +20,7 @@ describe('Timeline Testing', () => {
     const wrapper = mount(
       <MemoryRouter>
         <Timeline />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // simulates click send after typing

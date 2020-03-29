@@ -14,13 +14,13 @@ import { database } from '../../configs/firebase';
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
     margin: '1.5rem',
-    cursor: 'pointer'
+    cursor: 'pointer',
   },
   content: {
     [theme.breakpoints.down('xs')]: {
-      fontSize: '10px'
-    }
-  }
+      fontSize: '10px',
+    },
+  },
 }));
 
 type TimelineProps = {} & RouteComponentProps;
@@ -39,12 +39,10 @@ function Timeline({ history }: TimelineProps) {
       const list = data.val() || {};
 
       if (Object.keys(list).length > 0) {
-        const getDataKeys = Object.keys(data.val()).map((key: string) => {
-          return {
-            id: key,
-            ...list[key]
-          };
-        });
+        const getDataKeys = Object.keys(data.val()).map((key: string) => ({
+          id: key,
+          ...list[key],
+        }));
         setThreads(getDataKeys);
       }
     });
@@ -66,15 +64,15 @@ function Timeline({ history }: TimelineProps) {
 
   return (
     <Home>
-      <React.Fragment>
-        <Button size='small' style={{ marginTop: '2rem' }} disabled>
+      <>
+        <Button size="small" style={{ marginTop: '2rem' }} disabled>
           Beranda
         </Button>
 
         {threads.length > 0 ? (
-          threads.map((data: any, index: number) => (
+          threads.map((data: any) => (
             <Card
-              key={index}
+              key={data.id}
               raised
               className={classes.container}
               onClick={() => history.push(`/thread/${data.id}`)}
@@ -84,17 +82,23 @@ function Timeline({ history }: TimelineProps) {
                   {data.content}
                   <br />
                   <br />
-                  Klik untuk melihat <i>thread</i>
+                  Klik untuk melihat
+                  {' '}
+                  <i>thread</i>
                 </p>
               </CardContent>
             </Card>
           ))
         ) : (
           <p>
-            Tidak ada <i>thread</i> saat ini
+            Tidak ada
+            {' '}
+            <i>thread</i>
+            {' '}
+            saat ini
           </p>
         )}
-      </React.Fragment>
+      </>
     </Home>
   );
 }

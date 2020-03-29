@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/camelcase */
+
 /**
  * @file Firebase config
  */
@@ -12,7 +15,7 @@ const config = {
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 };
 
 // Initialize firebase
@@ -32,18 +35,16 @@ export const database = {
   create: (
     ref: string,
     variables: { [key: string]: any },
-    callback: (error: Error | null) => void | undefined
-  ) =>
-    firebase
-      .database()
-      .ref(ref)
-      .set(variables, callback),
+    callback: (error: Error | null) => void | undefined,
+  ) => firebase
+    .database()
+    .ref(ref)
+    .set(variables, callback),
   // READ
   read: (ref: string) => firebase.database().ref(ref),
   // DELETE
-  delete: (ref: string) =>
-    firebase
-      .database()
-      .ref(ref)
-      .remove()
+  delete: (ref: string) => firebase
+    .database()
+    .ref(ref)
+    .remove(),
 };

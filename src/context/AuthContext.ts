@@ -8,5 +8,5 @@ export type AuthenticatedUserType = {
 };
 
 export const AuthContext = React.createContext<AuthenticatedUserType | null>(
-  null
+  null,
 );

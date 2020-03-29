@@ -14,7 +14,7 @@ describe('Home Testing', () => {
         <Home>
           <Profile />
         </Home>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
     expect(toJSON(wrapper)).toMatchSnapshot();
   });
@@ -25,7 +25,7 @@ describe('Home Testing', () => {
         <Home>
           <Profile />
         </Home>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     /* Button: add new thread */

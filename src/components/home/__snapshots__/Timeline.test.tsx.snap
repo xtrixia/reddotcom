@@ -12,14 +12,14 @@ exports[`Timeline Testing render successfully 1`] = `
         "entries": Array [
           Object {
             "hash": "",
-            "key": "dhc4vh",
+            "key": "mzikye",
             "pathname": "/",
             "search": "",
             "state": undefined,
           },
           Object {
             "hash": "",
-            "key": "kjw5hn",
+            "key": "b27zik",
             "pathname": "/login",
             "search": "",
             "state": undefined,
@@ -33,7 +33,7 @@ exports[`Timeline Testing render successfully 1`] = `
         "listen": [Function],
         "location": Object {
           "hash": "",
-          "key": "kjw5hn",
+          "key": "b27zik",
           "pathname": "/login",
           "search": "",
           "state": undefined,
@@ -54,14 +54,14 @@ exports[`Timeline Testing render successfully 1`] = `
             "entries": Array [
               Object {
                 "hash": "",
-                "key": "dhc4vh",
+                "key": "mzikye",
                 "pathname": "/",
                 "search": "",
                 "state": undefined,
               },
               Object {
                 "hash": "",
-                "key": "kjw5hn",
+                "key": "b27zik",
                 "pathname": "/login",
                 "search": "",
                 "state": undefined,
@@ -75,7 +75,7 @@ exports[`Timeline Testing render successfully 1`] = `
             "listen": [Function],
             "location": Object {
               "hash": "",
-              "key": "kjw5hn",
+              "key": "b27zik",
               "pathname": "/login",
               "search": "",
               "state": undefined,
@@ -87,7 +87,7 @@ exports[`Timeline Testing render successfully 1`] = `
         location={
           Object {
             "hash": "",
-            "key": "kjw5hn",
+            "key": "b27zik",
             "pathname": "/login",
             "search": "",
             "state": undefined,
@@ -113,14 +113,14 @@ exports[`Timeline Testing render successfully 1`] = `
                 "entries": Array [
                   Object {
                     "hash": "",
-                    "key": "dhc4vh",
+                    "key": "mzikye",
                     "pathname": "/",
                     "search": "",
                     "state": undefined,
                   },
                   Object {
                     "hash": "",
-                    "key": "kjw5hn",
+                    "key": "b27zik",
                     "pathname": "/login",
                     "search": "",
                     "state": undefined,
@@ -134,7 +134,7 @@ exports[`Timeline Testing render successfully 1`] = `
                 "listen": [Function],
                 "location": Object {
                   "hash": "",
-                  "key": "kjw5hn",
+                  "key": "b27zik",
                   "pathname": "/login",
                   "search": "",
                   "state": undefined,
@@ -146,7 +146,7 @@ exports[`Timeline Testing render successfully 1`] = `
             location={
               Object {
                 "hash": "",
-                "key": "kjw5hn",
+                "key": "b27zik",
                 "pathname": "/login",
                 "search": "",
                 "state": undefined,
@@ -1097,11 +1097,13 @@ exports[`Timeline Testing render successfully 1`] = `
                           </ForwardRef(Button)>
                         </WithStyles(ForwardRef(Button))>
                         <p>
-                          Tidak ada 
+                          Tidak ada
+                           
                           <i>
                             thread
                           </i>
-                           saat ini
+                           
+                          saat ini
                         </p>
                       </div>
                     </ForwardRef(Grid)>

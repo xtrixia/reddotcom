@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+// This is intentional because have no alternative way to throw error for now
+
 /**
  * @file Login
  * @summary Handle login process
@@ -13,7 +16,7 @@ import {
   authentication,
   googleProvider,
   twitterProvider,
-  AuthProviderType
+  AuthProviderType,
 } from '../../configs/firebase';
 import { AuthContext } from '../../context';
 
@@ -22,26 +25,26 @@ const useStyles = makeStyles(() => ({
     display: 'grid',
     justifyItems: 'center',
     gridGap: '1rem',
-    padding: '5rem 4rem 0'
+    padding: '5rem 4rem 0',
   },
   wrapper: {
     borderRadius: '15px',
     border: 'solid 1px #b5b5b5',
     padding: '2rem',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   buttonGoogle: {
     margin: '0.5rem',
     '&:hover': {
-      background: '#E94235'
-    }
+      background: '#E94235',
+    },
   },
   buttonTwitter: {
     margin: '0.5rem',
     '&:hover': {
-      background: '#1B91DA'
-    }
-  }
+      background: '#1B91DA',
+    },
+  },
 }));
 type LoginProps = {} & RouteComponentProps;
 
@@ -53,15 +56,14 @@ function Login({ history }: LoginProps) {
   const handleLogin = (provider: AuthProviderType) => {
     authentication
       .signInWithPopup(provider)
-      .then(async data => {
+      .then(async (data) => {
         // check accounts in database
-        let accounts = await database.read(`/accounts/`).once('value');
+        let accounts = await database.read('/accounts/').once('value');
         accounts = accounts.val();
 
         // generate custom uid if `data.user.uid` is null
-        const uid: string =
-          data.user?.uid ||
-          `acc-${Math.random()
+        const uid: string = data.user?.uid
+          || `acc-${Math.random()
             .toString(36)
             .substring(2) + Date.now().toString(36)}`;
 
@@ -69,13 +71,13 @@ function Login({ history }: LoginProps) {
         await database.create(
           `/sessions/${data.user?.uid}`,
           {
-            username: data.user?.displayName
+            username: data.user?.displayName,
           },
           (error: any) => {
             if (error) {
               alert(error.message);
             }
-          }
+          },
         );
 
         // add current user if not in database yet
@@ -86,19 +88,19 @@ function Login({ history }: LoginProps) {
               username: data.user?.displayName,
               email: data.user?.email,
               verified: data.user?.emailVerified,
-              photoURL: data.user?.photoURL
+              photoURL: data.user?.photoURL,
             },
             (error: any) => {
               if (error) {
                 alert(error.message);
               }
-            }
+            },
           );
         }
 
         history.push('/');
       })
-      .catch(error => {
+      .catch((error) => {
         alert(error.message);
       });
   };
@@ -125,7 +127,7 @@ function Login({ history }: LoginProps) {
       </div>
     </Grid>
   ) : (
-    <Redirect to='/' />
+    <Redirect to="/" />
   );
 }
 

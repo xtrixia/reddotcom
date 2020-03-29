@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-props-no-spreading */
+// This is intentional because in needed to mock route props
+
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { mount } from 'enzyme';
@@ -9,7 +12,7 @@ describe('Login Testing', () => {
   const mockRouteProps: RouteComponentProps = {
     history: {} as any,
     location: {} as any,
-    match: {} as any
+    match: {} as any,
   };
 
   it('simulates click login with google', () => {

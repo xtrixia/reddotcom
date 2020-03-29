@@ -22,23 +22,23 @@ function Router() {
 
   const [
     authenticatedUser,
-    setAuthenticatedUser
+    setAuthenticatedUser,
   ] = useState<AuthenticatedUserType | null>(initialCurrentUser);
 
   useEffect(() => {
-    authentication.onAuthStateChanged(user => {
+    authentication.onAuthStateChanged((user) => {
       if (user) {
         setAuthenticatedUser({
           uid: user.uid,
           displayName: user.displayName || '',
           email: user.email || '',
-          photoURL: user.photoURL || ''
+          photoURL: user.photoURL || '',
         });
 
         // persist
         localStorage.setItem(
           'CURRENT_USER',
-          JSON.stringify(persistedCurrentUser)
+          JSON.stringify(persistedCurrentUser),
         );
       } else {
         setAuthenticatedUser(null);
@@ -53,10 +53,10 @@ function Router() {
       <BrowserRouter>
         <Switch>
           <Footer>
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/' component={Timeline} />
-            <Route exact path='/profile' component={Profile} />
-            <Route exact path='/thread/:id' component={Thread} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/" component={Timeline} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/thread/:id" component={Thread} />
           </Footer>
         </Switch>
       </BrowserRouter>

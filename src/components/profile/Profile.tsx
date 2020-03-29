@@ -17,9 +17,9 @@ import { ProfileType } from './types';
 const useStyles = makeStyles(() => ({
   fonts: {
     '@media all and (max-width: 540px)': {
-      fontSize: '10px'
-    }
-  }
+      fontSize: '10px',
+    },
+  },
 }));
 
 interface RouteParams {
@@ -35,7 +35,7 @@ function Profile({ history }: ProfileProps) {
 
   const INITIAL_PROFILE: ProfileType = {
     email: '',
-    username: ''
+    username: '',
   };
 
   const [profile, setProfile] = useState<ProfileType>(INITIAL_PROFILE);
@@ -48,7 +48,7 @@ function Profile({ history }: ProfileProps) {
 
     setProfile({
       email: detailProfile?.email,
-      username: detailProfile?.username
+      username: detailProfile?.username,
     });
   };
 
@@ -59,9 +59,9 @@ function Profile({ history }: ProfileProps) {
 
   return (
     <Home>
-      <React.Fragment>
+      <>
         <Button
-          size='small'
+          size="small"
           style={{ marginTop: '2rem', marginBottom: '2rem' }}
           onClick={() => history.push('/')}
         >
@@ -71,7 +71,7 @@ function Profile({ history }: ProfileProps) {
         <h3>{profile.username}</h3>
 
         <p className={classes.fonts}>{profile.email}</p>
-      </React.Fragment>
+      </>
     </Home>
   );
 }

@@ -9,7 +9,7 @@ describe('DetailThread Testing', () => {
     const wrapper = mount(
       <MemoryRouter>
         <DetailThread />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const buttonHome = wrapper.find('button').at(3);
@@ -20,7 +20,7 @@ describe('DetailThread Testing', () => {
     const wrapper = mount(
       <MemoryRouter>
         <DetailThread />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     // simulates change input

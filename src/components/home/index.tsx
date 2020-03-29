@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+// This is intentional because have no alternative way to throw error for now
+
 /**
  * @file Home
  * @summary Handle homepage after login
@@ -21,58 +24,58 @@ const useStyles = makeStyles((theme: Theme) => ({
     gridGap: '1rem',
     padding: '5rem 4rem 0',
     [theme.breakpoints.down('xs')]: {
-      padding: '5rem 0 0'
-    }
+      padding: '5rem 0 0',
+    },
   },
   content: {
     width: '55%',
     border: 'solid 1px #b5b5b5',
     height: '30rem',
     overflow: 'scroll',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   toolbar: {
     width: '55%',
-    justifySelf: 'center'
+    justifySelf: 'center',
   },
   navigations: {
     display: 'flex',
     justifyContent: 'space-between',
     '& > button:nth-child(2)': {
       [theme.breakpoints.down('xs')]: {
-        display: 'none'
-      }
-    }
+        display: 'none',
+      },
+    },
   },
   rightbar: {
     display: 'flex',
     width: '15%',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   button: {
     width: 'max-content',
     [theme.breakpoints.down('xs')]: {
       fontSize: '10px',
-      width: 'auto'
-    }
+      width: 'auto',
+    },
   },
   icon: {
     [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
+      display: 'none',
+    },
   },
   '@global': {
     '*::-webkit-scrollbar': {
-      width: '0.4em'
+      width: '0.4em',
     },
     '*::-webkit-scrollbar-track': {
-      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+      '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)',
     },
     '*::-webkit-scrollbar-thumb': {
       backgroundColor: 'rgba(0,0,0,.1)',
-      outline: '1px solid #b5b5b5'
-    }
-  }
+      outline: '1px solid #b5b5b5',
+    },
+  },
 }));
 
 type HomeProps = {
@@ -98,34 +101,34 @@ function Home({ children, history }: HomeProps) {
       <Grid className={classes.toolbar}>
         <nav className={classes.navigations}>
           <Button
-            variant='contained'
+            variant="contained"
             className={classes.button}
             startIcon={<AddCircleOutline className={classes.icon} />}
-            aria-label='add'
-            size='small'
+            aria-label="add"
+            size="small"
             onClick={() => setToggleAdd(!toggleAdd)}
           >
             New thread
           </Button>
           <div className={classes.rightbar}>
             <IconButton
-              aria-label='profile'
-              size='small'
+              aria-label="profile"
+              size="small"
               className={classes.icon}
               onClick={() => history.push('/profile')}
             >
               <Person />
             </IconButton>
             <IconButton
-              aria-label='logout'
-              size='small'
+              aria-label="logout"
+              size="small"
               onClick={() => {
                 authentication
                   .signOut()
                   .then(() => {
                     database.delete(`/sessions/${currentUser?.uid}`);
                   })
-                  .catch(error => {
+                  .catch((error) => {
                     alert(error.message);
                   });
               }}
