@@ -1,9 +1,12 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import toJSON from 'enzyme-to-json';
+import { mount } from 'enzyme';
+
 import App from '.';
 
-test('renders learn react link', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Footer Testing', () => {
+  it('render successfully', () => {
+    const wrapper = mount(<App />);
+    expect(toJSON(wrapper)).toMatchSnapshot();
+  });
 });

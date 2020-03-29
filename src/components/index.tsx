@@ -1,16 +1,16 @@
 /**
- * @file Footer
- * @summary Footer that wrap all children's component
+ * @file Wrapper
+ * @summary Wrapper that wrap all children's component
  */
 
 import React from 'react';
 import { Grid } from '@material-ui/core';
 
-type LoungeProps = {
+type WrapperProps = {
   children?: React.ReactNode;
 };
 
-function Footer({ children }: LoungeProps) {
+function Wrapper({ children }: WrapperProps) {
   return (
     <Grid container spacing={4}>
       <Grid item xs={12}>
@@ -26,4 +26,4 @@ function Footer({ children }: LoungeProps) {
   );
 }
 
-export default Footer;
+export default Wrapper;

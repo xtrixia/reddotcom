@@ -4,7 +4,6 @@
  */
 
 import React, { useState, useContext } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Grid, Button, IconButton, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Send } from '@material-ui/icons';
@@ -22,7 +21,7 @@ const useStyles = makeStyles(() => ({
 
 type AddProps = {
   onCancel: () => void;
-} & RouteComponentProps;
+};
 
 function Add({ onCancel }: AddProps) {
   const classes = useStyles();
@@ -81,7 +80,7 @@ function Add({ onCancel }: AddProps) {
           Batal
         </Button>
         <IconButton
-          aria-label='add'
+          aria-label='add-thread'
           size='small'
           type='submit'
           onClick={handleSubmit}
@@ -93,4 +92,4 @@ function Add({ onCancel }: AddProps) {
   );
 }
 
-export default withRouter(Add);
+export default Add;

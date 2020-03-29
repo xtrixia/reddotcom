@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import { Send } from '@material-ui/icons';
 
-import Home from '../index';
+import Home from '..';
 import { database } from '../../../configs/firebase';
 
 import { ThreadType } from './types';
@@ -139,7 +139,11 @@ function Thread({ match, history }: ThreadProps) {
           }
         />
 
-        <IconButton aria-label='add' size='small' onClick={handleSubmit}>
+        <IconButton
+          aria-label='add-comment'
+          size='small'
+          onClick={handleSubmit}
+        >
           <Send />
         </IconButton>
 

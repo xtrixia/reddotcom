@@ -6,8 +6,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Footer from './components';
-import Login from './components/login';
-import Profile from './components/profile';
+import Login from './components/login/Login';
+import Profile from './components/profile/Profile';
 import Thread from './components/home/thread/Detail';
 import Timeline from './components/home/Timeline';
 
