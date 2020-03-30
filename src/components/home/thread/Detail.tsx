@@ -18,8 +18,9 @@ import {
 import { Send } from '@material-ui/icons';
 
 import Home from '..';
-import { database } from '../../../configs/firebase';
+import Navigations from '../Navigations';
 
+import { database } from '../../../configs/firebase';
 import { ThreadType } from './types';
 
 type RouteParams = {
@@ -28,7 +29,7 @@ type RouteParams = {
 
 type ThreadProps = {} & RouteComponentProps<RouteParams>;
 
-function Thread({ match, history }: ThreadProps) {
+function Thread({ match }: ThreadProps) {
   const INITIAL_DETAIL: ThreadType = {
     author: '',
     content: '',
@@ -114,13 +115,11 @@ function Thread({ match, history }: ThreadProps) {
   return (
     <Home>
       <>
-        <Button
-          size="small"
-          style={{ marginTop: '2rem' }}
-          onClick={() => history.push('/')}
-        >
-          Beranda
+        <Button size="small" style={{ marginTop: '2rem' }} disabled>
+          A Thread
         </Button>
+
+        <Navigations />
 
         <p>
           @

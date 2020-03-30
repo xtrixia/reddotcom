@@ -4,14 +4,14 @@
  */
 
 import React, { useEffect, useState, useContext } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { database } from '../../configs/firebase';
-import { AuthContext } from '../../context';
 import Home from '../home';
+import Navigations from '../home/Navigations';
+import { AuthContext } from '../../context';
 
+import { database } from '../../configs/firebase';
 import { ProfileType } from './types';
 
 const useStyles = makeStyles(() => ({
@@ -20,15 +20,12 @@ const useStyles = makeStyles(() => ({
       fontSize: '10px',
     },
   },
+  shortcut: {
+    padding: '0 0.5rem',
+  },
 }));
 
-interface RouteParams {
-  id?: string;
-}
-
-type ProfileProps = {} & RouteComponentProps<RouteParams>;
-
-function Profile({ history }: ProfileProps) {
+function Profile() {
   const classes = useStyles();
 
   const currentUser = useContext(AuthContext);
@@ -49,6 +46,7 @@ function Profile({ history }: ProfileProps) {
     setProfile({
       email: detailProfile?.email,
       username: detailProfile?.username,
+      verified: detailProfile?.verified,
     });
   };
 
@@ -60,20 +58,22 @@ function Profile({ history }: ProfileProps) {
   return (
     <Home>
       <>
-        <Button
-          size="small"
-          style={{ marginTop: '2rem', marginBottom: '2rem' }}
-          onClick={() => history.push('/')}
-        >
-          Beranda
+        <Button size="small" style={{ marginTop: '2rem' }} disabled>
+          Profile
         </Button>
+
+        <Navigations />
 
         <h3>{profile.username}</h3>
 
         <p className={classes.fonts}>{profile.email}</p>
+
+        <p className={classes.fonts}>
+          {profile.verified ? 'Email sudah terverifikasi' : 'Email belum terverifikasi'}
+        </p>
       </>
     </Home>
   );
 }
 
-export default withRouter(Profile);
+export default Profile;

@@ -45,6 +45,7 @@ function Add({ onCancel }: AddProps) {
       {
         content,
         accountId: currentUser?.uid,
+        createdAt: Date.now(),
       },
       (error: any) => {
         if (error) {

@@ -29,7 +29,7 @@ describe('DetailThread Testing', () => {
     expect(inputText.text()).toEqual('a comment');
 
     // simulates click submit
-    const buttonSubmit = wrapper.find('button').at(4);
+    const buttonSubmit = wrapper.find('button').at(6);
     buttonSubmit.simulate('click');
     expect(buttonSubmit.props()['aria-label']).toEqual('add-comment');
   });
